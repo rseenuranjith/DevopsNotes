@@ -1,0 +1,54 @@
+* Create 2 machines for Ansible , one is master and other is client node 
+
+* DNS should work fine , if not add the entry in /etc/hosts file 
+
+* Create the user ansible on all hosts 
+
+* give root privileges using sudo with no password access 
+
+ansible ALL=(ALL)       NOPASSWD:       ALL
+
+* Install the ansible packages and verify the version 
+sudo yum install ansible -y
+ansible --version 
+
+* generate ssh-keygen for ansible user and copy that to all clients 
+
+* create some dev directory and inside create the ansible.cfg file and add the follwoing basic entry 
+
+      [defaults]
+      inventory=hosts
+
+* create host file in same path  and add the hosts entries 
+
+[ansible@ansibleserver dev]$ cat hosts 
+ansibleclient
+
+[prod]
+ansibleclient
+[ansible@ansibleserver dev]$ 
+
+* execute the follwoing command to list the hosts 
+
+[ansible@ansibleserver dev]$ ansible all --list
+  hosts (1):
+    ansibleclient
+[ansible@ansibleserver dev]$ 
+
+* verify the connectivity to all client 
+
+ansible all -m command -a ping 
+* Inorder to perform root privileged adhoc command via ansible user , for examp yum command 	
+
+following entry should be added in our config file  whicll will be in ansible global config file /etc/ansible/ansible.cfg 
+
+[privilege_escalation]
+#become=True
+#become_method=sudo
+#become_user=root
+#become_ask_pass=False
+
+* Perform root privilege command now 
+
+ansible all -m command -a "yum install httpd -y "
+

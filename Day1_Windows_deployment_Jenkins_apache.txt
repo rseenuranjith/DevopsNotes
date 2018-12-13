@@ -1,0 +1,54 @@
+
+Authentication 
+Authorization 
+
+Webserver 
+AppServer 
+DB server 
+
+GitHub - rseenuranjith (  Explor01#)
+Apache - rseenuranjith (Seenu@123 or Explor01# )
+Git HUB installation 
+
+Automation and Orchestration 
+
+Automation 
+Orchestration - Creating  a workflow of automation based on when to execute and how to execute 
+
+Pre-requiste for Tomcat Java 
+
+Tomcat Installation 
+
+
+Static Webpage - Filename.jar or filename.war
+Dynamic Webpage - filename.ejb ( have rules to do on what we should perform on that web page )
+
+Static Webpage + Dynamice Webpage = filename.ear
+
+Example : filename.war + filename.ejb = filename.ear 
+
+war - webarchive
+ejb - enterprise java beans
+ear - enterprise archive 
+
+Set Environment variables 
+ANT_HOME - C:\Users\Ranjith\Desktop\Devops\soft\apache-ant-1.10.5
+MVN_HOME - C:\Users\Ranjith\Desktop\Devops\soft\apache-maven-3.5.4
+GRADLE_HOME - C:\Users\Ranjith\Desktop\Devops\soft\gradle-4.9
+JAVA_HOME - C:\Program Files\Java\jdk1.8.0_181
+
+Set the path 
+%MVN_HOME%\bin;%ANT_HOME%\bin;%GRADLE_HOME%\bin;%JAVA_HOME%\bin
+
+test it from the windows command prompt 
+java -version 
+mvn --version
+ant -version
+gradle -version
+
+https://github.com/bvijaycom/commands
+
+
+When to use which tools 
+ANT - only if build.xml file present on source code 
+MAVEN - if both build.xml and pom.xml 

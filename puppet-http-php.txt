@@ -1,0 +1,306 @@
+if $::hostname == servera {
+
+group { 'apache':
+  ensure => 'present',
+}
+
+package { 'httpd':
+  ensure => 'present',
+}
+
+package { 'php':
+  ensure => 'present',
+}
+
+service { 'httpd':
+  ensure => 'running',
+  enable => 'true',
+}
+
+
+
+user { 'jim':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/jim',
+}
+
+file { '/var/www/jim':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => User['jim'],
+}
+
+file { '/var/www/jim/homejim.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homejim.html',
+}
+
+user { 'john':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/john',
+}
+
+file { '/var/www/john':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'john',
+  require => User['john'],
+}
+
+file { '/var/www/jim/homejohn.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'john',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homejohn.html',
+}
+
+user { 'smith':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/smith',
+}
+
+file { '/var/www/smith':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'smith',
+  require => User['smith'],
+}
+
+file { '/var/www/jim/homesmith.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'smith',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homesmith.html',
+}
+
+
+file { '/etc/httpd/conf.d/httpdservera.conf':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'root',
+  require => Package['httpd'],
+  source => puppet:///modules/httpphp/httpdservera.conf
+}
+
+}
+
+if $::hostname == serverb {
+
+group { 'apache':
+  ensure => 'present',
+}
+
+package { 'httpd':
+  ensure => 'present',
+}
+
+package { 'php':
+  ensure => 'present',
+}
+
+service { 'httpd':
+  ensure => 'running',
+  enable => 'true',
+}
+
+
+
+user { 'jim':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/jim',
+}
+
+file { '/var/www/jim':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => User['jim'],
+}
+
+file { '/var/www/jim/homejim.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homejim.html',
+}
+
+user { 'john':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/john',
+}
+
+file { '/var/www/john':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'john',
+  require => User['john'],
+}
+
+file { '/var/www/jim/homejohn.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'john',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homejohn.html',
+}
+
+user { 'smith':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/smith',
+}
+
+file { '/var/www/smith':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'smith',
+  require => User['smith'],
+}
+
+file { '/var/www/jim/homesmith.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'smith',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homesmith.html',
+}
+
+file { '/etc/httpd/conf.d/httpdservera.conf':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'root',
+  require => Package['httpd'],
+  source => puppet:///modules/httpphp/httpdservera.conf
+}
+
+}
+
+
+if $::hostname == serverc {
+
+group { 'apache':
+  ensure => 'present',
+}
+
+package { 'httpd':
+  ensure => 'present',
+}
+
+package { 'php':
+  ensure => 'present',
+}
+
+service { 'httpd':
+  ensure => 'running',
+  enable => 'true',
+}
+
+
+
+user { 'jim':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/jim',
+}
+
+file { '/var/www/jim':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => User['jim'],
+}
+
+file { '/var/www/jim/homejim.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homejim.html',
+}
+
+user { 'john':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/john',
+}
+
+file { '/var/www/john':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'john',
+  require => User['john'],
+}
+
+file { '/var/www/jim/homejohn.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'john',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homejohn.html',
+}
+
+user { 'mike':
+  ensure           => 'present',
+  gid              => 'apache',
+  home             => '/var/www/mike',
+}
+
+file { '/var/www/mike':
+  ensure   => 'directory',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'jim',
+  require => User['mike'],
+}
+
+file { '/var/www/jim/homemike.html':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'smith',
+  require => Package['httpd'],
+  source => 'puppet:///modules/httpphp/homesmith.html',
+}
+
+file { '/etc/httpd/conf.d/httpdservera.conf':
+  ensure   => 'file',
+  group    => 'apache',
+  mode     => '755',
+  owner    => 'root',
+  require => Package['httpd'],
+  source => puppet:///modules/httpphp/httpdservera.conf
+}
+
+}
+
+

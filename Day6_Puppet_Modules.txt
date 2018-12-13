@@ -1,0 +1,136 @@
+* Generate the index and directory structure for the module 
+	puppet module generate puppet-software
+
+* The above command will prompt for certain questions which will be used as index and it will create directory named puppet-software 
+
+* Remove the following entry from metadata.json file under the directory created , because this stanza will check for dependencies directly from puppet website 
+    {
+      "name": "puppetlabs-stdlib",
+      "version_range": ">= 1.0.0"
+    }
+	
+* Navigate to manifest directory and edit the init.pp file and add the entries for creating user with home directory and specific groups 
+
+
+
+Script with IF condition 
+========================
+group { 'tomcat':
+  ensure => 'present',
+  gid    => '1003',
+}
+
+user { 'tomcat':
+  ensure           => 'present',
+  comment          => 'wheel',
+  home             => '/home/tomcat',
+  shell            => '/bin/bash',
+  uid              => '1003',
+  gid              => '1003',
+}
+
+file { '/home/tomcat':
+  ensure   => 'directory',
+  group    => 'wheel',
+  mode     => '755',
+  owner    => 'tomcat',
+}
+
+* puppet apply <.pp file > --noop ===> --noop is like preview run of the command 
+
+* Build the module which we created and it will create one directory called pkg 
+
+[root@puppet1 ~]# puppet module build puppet-software/
+Notice: Building /root/puppet-software for release
+Module built: /root/puppet-software/pkg/puppet-software-0.1.1.tar.gz
+[root@puppet1 ~]# 
+
+[root@puppet1 puppet-software]# ls -lrt 
+total 12
+-rw-r--r--. 1 root root  633 Dec  8 13:38 Rakefile
+drwxr-xr-x. 3 root root   43 Dec  8 13:38 spec
+-rw-r--r--. 1 root root 2923 Dec  8 13:38 README.md
+drwxr-xr-x. 2 root root   21 Dec  8 13:38 tests
+-rw-r--r--. 1 root root  288 Dec  8 13:43 metadata.json
+drwxr-xr-x. 2 root root   21 Dec  8 13:57 manifests
+drwxr-xr-x. 3 root root   71 Dec  8 14:15 pkg
+[root@puppet1 puppet-software]# 
+
+* List the module already present 
+puppet module list
+
+* Install the module and verify the module list 
+
+[root@puppet1 ~]# puppet module install puppet-software/pkg/puppet-software-0.1.1.tar.gz 
+Notice: Preparing to install into /etc/puppet/modules ...
+Notice: Downloading from https://forgeapi.puppetlabs.com ...
+Notice: Installing -- do not interrupt ...
+/etc/puppet/modules
+└── puppet-software (v0.1.1)
+[root@puppet1 ~]# 
+[root@puppet1 ~]# puppet module list 
+/etc/puppet/modules
+└── puppet-software (v0.1.1)
+/usr/share/puppet/modules (no modules installed)
+[root@puppet1 ~]# 
+
+* Have to specify the modules on site.pp file on puppet server , then only it will be visible to the client . 
+
+vi /etc/puppet/manifests/site.pp
+
+node puppet2 {
+  include software
+}
+
+* Run puppet agent -t , now the user will be created with home directory and permissions specified 
+
+
+Note : In case if any corrections or bug , we can just modify the metadata.json file with new version number and run the puppet install command with --force with the new package file generated under the PKG directory  and sync the client node and it will take the new configurations 
+
+
+
+
+group { 'mike':
+  ensure => 'present',
+}
+
+group { 'torvald':
+  ensure => 'present',
+}
+
+if $::is_virtual {
+
+user { 'smith':
+  ensure => 'present',
+  home => '/home/virtual',
+  uid  => '1590',
+  gid => 'mike',
+}
+
+file { '/home/virtual':
+  ensure => 'directory',
+  owner  => 'smith',
+  group => 'mike',
+  require => User['smith'],
+}
+
+}
+
+else
+{
+
+user { 'smith':
+  ensure => 'present',
+  home => '/home/physical',
+  uid  => '1590',
+  gid => 'mike',
+}
+
+file { '/home/physical':
+  ensure => 'directory',
+  owner  => 'smith',
+  group => 'mike',
+  require => User['smith'],
+}
+}
+

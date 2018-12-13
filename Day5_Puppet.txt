@@ -1,0 +1,16 @@
+
+Puppet - Puppet is  pull based , since all client will have the puppet agent running and it will by themselves pull the infromation or data from the puppet master servers and execute on the respective nodes . 
+
+*Push - Requires high config on serve end as all the process will be exected from the server end 
+*Pull - Doesn't require high config on server end as all the process will be executed from client end 
+
+Puppet uses port 8140 by default and we should have this port opened in firewall and allowed . 
+
+10.142.0.5  puppet1  ---- master 
+10.142.0.6  puppet2  ---- client 
+
+Puppet - Manifest 
+Ansible - playbook
+Chef - cookbook 
+puppet resource --types ======> key command 
+

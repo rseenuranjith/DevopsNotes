@@ -1,0 +1,135 @@
+* Jenkins - Will do follwoing 4 thing 
+
+Followup all the componenets 
+trigger all the components
+ask all the components 
+Monitor all the components
+
+* Create GitHub account
+* Create Google CLoud Account -- > Add firewall rules to allow all ports - > create new instance by allowing "Allow full access to all Cloud APIs"
+
+* Jenkins Configuration
+=======================
+https://github.com/bvijaycom/commands/blob/master/jenkins
+
+yum install epel-release  java-1.8.0-openjdk-devel vim wget ntp -y  -------- pre-requiste for Jenkins installation 
+systemctl stop firewalld;systemctl disable firewalld
+ntpdate pool.ntp.org
+ 
+vim ~/.bash_profile
+
+In this file , add the paths 
+
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0
+export JRE_HOME=/usr/lib/jvm/java-1.8.0/jre
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin:$JRE_HOME/bin
+
+
+source ~/.bash_profile --  to avoid log on and log off procedure to enable 
+
+wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo ------------> Adding Jenkins repo to the repolist 
+
+rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key  ------- to ocnfirm the gpg check
+yum install jenkins
+
+systemctl restart jenkins;systemctl enable jenkins;systemctl status jenkins
+
+* Got to Browser and connect using the public IP of the instance like http://35.246.153.218:8080/
+
+*Install the required plugin 
+
+[root@master java-1.8.0]# cat /var/lib/jenkins/secrets/initialAdminPassword
+9da04e163934413fbb5128977ec567bb
+
+* Install The following plugins as we login to the Jenkins browser page using the above password 
+
+* Set the user name and password for futher login to Jenkins page 
+Username - rseenuranjith
+Password - Seenu@123
+
+* Go to Jenkins Login page - > Manage Jenkins -> Manage Jenkins - > select the following plugins under Available Plugins 
+The following plugins needs to be installed
+dashboard view
+Build Pipeline
+Deploy to container
+Email Extension Template
+
+* Need to specify the path for Jenkins about java , git , maven 
+
+* before that install git and maven on the system 
+
+yum install git maven -y
+
+* Go to Manage jenkins - > Global Tool Configuration -> Set Java and maven path ( Note : Unselect Install Automatically )
+
+* Manage Nodes under Manage Jenkins - We can add nodes here in jenkins Cluster for peak usage or depends on the system loads .
+
+* Configure Global Security under Manage Jenkins - We can configure or control the user roles and responsibilities 
+
+* Configure System under Manage jenkins used to controll the global setting and path for the system 
+
+============================================================================================================================
+
+* Create new instance for web server which will be Artifactory 
+
+* Artifactory - It is a web server , Similar to redhat report where Developer will put all the developed files  ( ex;jar , war ,exe  files etc; )or wait for development as they can pull it from the artifactory . when there is some bug on previous code , so the deployment team or application need not to contact .
+
+* Artifactory Installation
+==========================
+https://github.com/bvijaycom/commands/blob/master/artifactory-tomcat
+
+yum install epel-release  java-1.8.0-openjdk-devel vim wget ntp -y
+systemctl stop firewalld;systemctl disable firewalld
+ ntpdate pool.ntp.org
+
+vim ~/.bash_profile
+
+In this file
+
+export JAVA_HOME=/usr/lib/jvm/java-1.8.0
+export JRE_HOME=/usr/lib/jvm/java-1.8.0/jre
+PATH=$PATH:$HOME/bin:$JAVA_HOME/bin:$JRE_HOME/bin
+
+source ~/.bash_profile
+
+just refernece - https://www.jfrog.com/confluence/display/RTF/Installing+Artifactory
+just refernece - https://www.jfrog.com/confluence/display/RTF/Installing+on+Linux+Solaris+or+Mac+OS#InstallingonLinuxSolarisorMacOS-ServiceInstallation
+
+wget https://bintray.com/jfrog/artifactory-rpms/rpm -O /etc/yum.repos.d/bintray-jfrog-artifactory-rpms.repo
+
+yum install jfrog-artifactory-oss   ( oss - open source)
+
+vim /opt/jfrog/artifactory/bin/artifactory.default --- Nothing changed here , just to understand 
+	* file content - export JAVA_OPTIONS="-server -Xms512m -Xmx2g -Xss256k -XX:+UseG1GC -XX:OnOutOfMemoryError=\"kill -9 %p\" ( Xms - minimum size , Xmx - Maximum size , -XX:+UseG1GC - Garbage collection enablement )
+	* garbage collection - cleans up inactive threads and it is mandatory to be enabled 
+
+change heap size to 512mb  ==> Server memory should be more than the heap size 
+
+* artifactory is webapps which deployed over tomcat
+
+yum install tomcat-webapps tomcat-admin-webapps -y
+
+vim /usr/share/tomcat/conf/tomcat.conf  ---- > Setting heap size and garbage collector for tomcat server 
+JAVA_OPTS="-Djava.security.egd=file:/dev/./urandom -Djava.awt.headless=true -Xmx512m -XX:MaxPermSize=256m -XX:+UseConcMarkSweepGC"
+
+vim /usr/share/tomcat/conf/tomcat-users.xml --> Defining the roles 
+
+<role rolename="admin"/>
+<role rolename="admin-gui"/>
+<role rolename="admin-script"/>
+<role rolename="manager"/>
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<role rolename="manager-jmx"/>
+<role rolename="manager-status"/>
+<user username="admin" password="adminadmin" roles="admin,manager,admin-gui,admin-script,manager-gui,manager-script,manager-jmx,manager-status" />
+
+	
+
+http://35.231.56.201:8080
+
+http://35.231.56.201:8081/artifactory/
+
+vi /usr/share/tomcat/conf/server.xml --> port change in tomcat
+
+

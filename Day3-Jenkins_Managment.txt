@@ -1,0 +1,36 @@
+* Import the repository on github using Import registry option 
+* verify the home paths for java , maven and git  on jenkins through manage jenkins -- > Global tool configuration 
+* Create new item on jenkins 
+* Select maven and we will have to select source code as  github and enter the source code repo 
+* Select Post Build actions - > Deploy war/ear to a container & Enter **/*.war or **/*.ear depends on source code 
+* Save & Apply it 
+* Run the build now and monitor the console log 
+* We can also Schedule this automatically , by selecting Configure - > Build Triggers -> Poll SCM - > Enter the schedule and save it 
+* For testing , create some test file on github repo where the source code is present 
+* Enable Auto-refresh on Jenkins page and monitor the build will be automatically 
+
+configure jenkins server,configure tomcat repository server
+
+then configure manual maven project from github and do some manual testing.Once manual deployment is sucessfull then try to enable 
+POL SCM with  * * * * *
+
+before starting the below steps make sure above setup is in place
+
+On jenkins server if git is not installed 
+
+yum install git in that machinecho
+
+Following commands on Jenkins server 
+=====================================
+
+git clone https://github.com/rseenuranjith/maven_demo1.git
+
+cd maven_demo1
+git status
+create one dummy file --> touch ranith-cli
+git status
+git add *
+git commit -m "tested by creating file"
+git log
+git remote add origin https://github.com/rseenuranjith/maven_demo1.git
+git push -u origin master
